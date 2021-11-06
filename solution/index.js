@@ -1,9 +1,9 @@
 module.exports = class {
-	seen = {};
-	items = [];
-
 	constructor(initArray)
 	{
+		this.seen = {};
+		this.items = [];
+
 		if (Array.isArray(initArray))
 		{
 			let j = 0;
@@ -20,31 +20,31 @@ module.exports = class {
 		}
 	}
 
-	add(x) {
-		const key = this.get_hash(x);
+	add = (item) => {
+		const key = this.get_hash(item);
 
 		if (!this.seen.hasOwnProperty(key)) {
 			const j = this.seen.length;
 			this.seen[key] = j;
-			this.items[j] = x;
+			this.items[j] = item;
 		}
 
 		return this;
 	}
 
-	entries() {
-		return this.items.map(value => [value, value]);
+	entries = () => {
+		return this.items.map(value => [value, value])[Symbol.iterator]();
 	}
 
-	clear() {
+	clear = () => {
 		this.items = [];
 	}
 
-	forEach(callbackfn, thisArg) {
+	forEach = (callbackfn, thisArg) => {
 		this.items.forEach(callbackfn, thisArg)
 	}
 
-	delete(data) {
+	delete = (data) => {
 
 		const key = this.get_hash(data);
 
@@ -55,19 +55,19 @@ module.exports = class {
 		}
 	}
 
-	keys() {
-		return this.items.keys();
+	keys = () => {
+		return Object.values(this.items)[Symbol.iterator]();
 	}
 
-	values() {
-		return this.items.values();
+	values = () => {
+		return this.keys();
 	}
 
-	has(element) {
+	has = (element) => {
 		return this.items.includes(element);
 	}
 
-	get_hash(item) {
+	get_hash = (item) => {
 		const itemType = typeof item;
 		return `${itemType}_${item}`;
 	}
@@ -75,6 +75,7 @@ module.exports = class {
 	get size() {
 		return this.items.length;
 	}
+
 	[Symbol.iterator]() {
 		return this.items.values();
 	}
