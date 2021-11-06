@@ -1,32 +1,20 @@
 module.exports = class {
 	constructor(initArray)
 	{
-		this.seen = {};
 		this.items = [];
 
 		if (Array.isArray(initArray))
 		{
-			let j = 0;
-
 			for(let i = 0; i < initArray.length; i++) {
 				const item = initArray[i];
-				const key = this.get_hash(item);
-				if (!this.seen.hasOwnProperty(key)) {
-					this.seen[key] = j;
-					this.items[j] = item;
-					j++;
-				}
+				this.add(item);
 			}
 		}
 	}
 
 	add = (item) => {
-		const key = this.get_hash(item);
-
-		if (!this.seen.hasOwnProperty(key)) {
-			const j = this.seen.length;
-			this.seen[key] = j;
-			this.items[j] = item;
+		if (!this.has(item)) {
+			this.items.push(item);
 		}
 
 		return this;
@@ -45,14 +33,8 @@ module.exports = class {
 	}
 
 	delete = (data) => {
-
-		const key = this.get_hash(data);
-
-		if (this.seen.hasOwnProperty(key)) {
-			const arrKey = this.seen[key];
-			this.items.splice(arrKey, 1);
-			delete this.seen[key];
-		}
+		const key = this.items.indexOf(data);
+		this.items.splice(key, 1);
 	}
 
 	keys = () => {
@@ -79,4 +61,6 @@ module.exports = class {
 	[Symbol.iterator]() {
 		return this.items.values();
 	}
+
+	[Symbol.toStringTag] = '^_^';
 }
